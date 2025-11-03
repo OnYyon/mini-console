@@ -1,10 +1,15 @@
+import sys
 import stat
 import time
 import pathlib
+
+import typer
 from rich import print
 from typing import Generator
 from typer import Argument, Option
 from typing_extensions import Annotated
+
+from src.logger.human_logger import human_log
 
 
 def get_long_format(
@@ -26,31 +31,35 @@ def get_long_format(
         yield item[0], f"{mode} {cnt_sym_link:>2} {owner}  {group} {size:>8} {last_touch} {item[1]}"
 
 #TODO: Mark a dir
+@human_log
 def ls(
+    ctx: typer.Context,
     path: Annotated[str, Argument(help="path to look dir")] = ".",
     is_long: Annotated[bool, Option("-l", help="List files in the long format")] = False,
-    is_all: Annotated[bool, Option("-a", help="\
-                                              Include directory entries whose names begin with a dot.")] = False,
-):
+    is_all: Annotated[bool, Option("-a",
+                                   help="Include directory entries whose names begin with a dot.")] = False,
+) -> tuple[str, bool]:
+    full_cmd = " ".join(sys.argv[1:])
     try:
         resolve_path = pathlib.Path(path).expanduser().resolve()
         if not resolve_path.exists():
             print(f"ls: {resolve_path}: [red]No such file or directory[/red]")
-            return
+            return f"No such file or directory: {resolve_path}", False
 
         if resolve_path.is_file():
             print(resolve_path.name)
-            return
+            return full_cmd, True
 
-        items = iter((item, item.name) for item in resolve_path.iterdir())
+        items = ((item, item.name) for item in resolve_path.iterdir())
         if not is_all:
-            items = iter(item for item in items if not item[1].startswith("."))
+            items = (item for item in items if not item[1].startswith("."))
 
         if is_long:
             items = get_long_format(items)
 
         for item in items:
             print(item[1])
-
+        return full_cmd, False
     except PermissionError:
         print(f"ls: {path}: [red]Permission denied[/red]")
+        return f"Permission denied: {path}", True
