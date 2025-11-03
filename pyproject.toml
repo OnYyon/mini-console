@@ -1,8 +1,10 @@
 [project]
 name = "labs"
 version = "0.1.0"
-description = "Add your description here"
-requires-python = ">=3.12"
+description = "Mini console app"
+requires-python = ">=3.14"
 dependencies = [
+    "mypy>=1.18.2",
     "pytest>=8.4.2",
+    "typer>=0.20.0",
 ]

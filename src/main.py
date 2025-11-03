@@ -1,20 +1,13 @@
-from src.power import power_function
-from src.constants import SAMPLE_CONSTANT
+import typer
+
+from src.commands.ls import ls
+from src.commands.cd import cd
 
 
-def main() -> None:
-    """
-    Обязательнная составляющая программ, которые сдаются. Является точкой входа в приложение
-    :return: Данная функция ничего не возвращает
-    """
+app = typer.Typer()
 
-    target, degree = map(int, input("Введите два числа разделенные пробелом: ").split(" "))
-
-    result = power_function(target=target, power=degree)
-
-    print(result)
-
-    print(SAMPLE_CONSTANT)
+app.command()(ls)
+app.command()(cd)
 
 if __name__ == "__main__":
-    main()
+    app()
