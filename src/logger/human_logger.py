@@ -14,7 +14,7 @@ def human_log(func: Callable):
             func(ctx, *args, **kwargs)
             logger.info(" ".join(sys.argv[1:]))
         except (FileNotFoundError, PermissionError) as e:
-            logging.error(e)
+            logging.error(sys.argv[1] + " " + str(e))
         except Exception as e:
             logging.critical(e)
     return wrapper

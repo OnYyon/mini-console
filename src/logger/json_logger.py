@@ -1,3 +1,4 @@
+import logging
 import sys
 import typer
 import structlog
@@ -20,7 +21,7 @@ structlog.configure(
 )
 
 json_logger = structlog.get_logger()
-
+logger = logging.getLogger("json")
 
 def json_log(func: Callable):
     @wraps(func)
@@ -35,6 +36,6 @@ def json_log(func: Callable):
                 params=ctx.params,
             )
         except Exception as e:
-            print(e)
+            logger.critical(e)
             return
     return wrapper

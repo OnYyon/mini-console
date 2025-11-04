@@ -10,6 +10,7 @@ repos:
           - typer
           - rich
           - structlog
+          - python-dotenv
 
 
 
