@@ -35,7 +35,6 @@ def json_log(func: Callable):
                 function=ctx.command.name,
                 params=ctx.params,
             )
-        except Exception as e:
-            logger.critical(e)
-            return
+        except Exception:
+            raise
     return wrapper

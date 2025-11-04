@@ -2,6 +2,7 @@ import typer
 import dotenv
 import pathlib
 from rich import print
+from typing import Optional
 from typing_extensions import Annotated
 
 from src.constants import ENV_PATH
@@ -12,9 +13,20 @@ from src.utils.history_decorator import make_history
 @human_log
 @make_history
 def cat(
-        ctx: typer.Context,
-        path: Annotated[str, typer.Argument(help="path to file")]
+    ctx: typer.Context,
+    path: Annotated[Optional[str], typer.Argument(help="path to file")] = None
 ):
+    if path is None:
+        try:
+            while True:
+                line = input()
+                print(line)
+        except EOFError:
+            return
+        except KeyboardInterrupt:
+            print()
+            return
+
     if pathlib.Path(path).is_absolute():
         with open(pathlib.Path(path).expanduser().resolve(), encoding="utf-8") as f:
             while line := f.readline():

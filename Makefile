@@ -1,7 +1,7 @@
 .PHONY: test
 
 test:
-	uv run python -m src.main pwd
+	uv run python -m src.main cp -r src/history src/commands
 help:
 	uv run python -m src.main cd --help
 clean:

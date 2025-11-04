@@ -21,5 +21,5 @@ def make_history(func: Callable):
                 f.write(f"{cnt:<} {' '.join(sys.argv[1:])}\n")
             func(ctx, *args, **kwargs)
         except Exception:
-            return
+            raise
     return wrapper
