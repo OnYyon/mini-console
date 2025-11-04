@@ -1,4 +1,3 @@
-import sys
 import stat
 import time
 import pathlib
@@ -38,17 +37,16 @@ def ls(
     is_long: Annotated[bool, Option("-l", help="List files in the long format")] = False,
     is_all: Annotated[bool, Option("-a",
                                    help="Include directory entries whose names begin with a dot.")] = False,
-) -> tuple[str, bool]:
-    full_cmd = " ".join(sys.argv[1:])
+):
     try:
         resolve_path = pathlib.Path(path).expanduser().resolve()
         if not resolve_path.exists():
             print(f"ls: {resolve_path}: [red]No such file or directory[/red]")
-            return f"No such file or directory: {resolve_path}", False
+            raise FileNotFoundError("No such file or directory")
 
         if resolve_path.is_file():
-            print(resolve_path.name)
-            return full_cmd, True
+            print(ctx.params["path"])
+            return
 
         items = ((item, item.name) for item in resolve_path.iterdir())
         if not is_all:
@@ -59,7 +57,7 @@ def ls(
 
         for item in items:
             print(item[1])
-        return full_cmd, False
+
     except PermissionError:
         print(f"ls: {path}: [red]Permission denied[/red]")
-        return f"Permission denied: {path}", True
+        raise PermissionError(f"Permission denied: {path}")

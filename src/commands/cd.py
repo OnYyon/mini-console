@@ -3,6 +3,6 @@ from typing_extensions import Annotated
 
 
 def cd(
-        path: Annotated[str, Argument()] = "."
+    path: Annotated[str, Argument()] = "."
 ):
-    print("path changed")
+    ...
