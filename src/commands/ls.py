@@ -1,10 +1,10 @@
 import stat
 import time
-import pathlib
-
-import dotenv
 import typer
+import dotenv
+import pathlib
 from rich import print
+from typing import Optional
 from typing import Generator
 from typer import Argument, Option
 from typing_extensions import Annotated
@@ -37,7 +37,7 @@ def get_long_format(
 @make_history
 def ls(
     ctx: typer.Context,
-    path: Annotated[str, Argument(help="path to look dir")] | None = None,
+    path: Annotated[Optional[str], Argument(help="path to look dir")] = None,
     is_long: Annotated[bool, Option("-l", help="List files in the long format")] = False,
     is_all: Annotated[bool, Option("-a",
                                    help="Include directory entries whose names begin with a dot.")] = False,
@@ -50,6 +50,13 @@ def ls(
 
     try:
         resolve_path = pathlib.Path(path).expanduser().resolve()
+        if not pathlib.Path(path).is_absolute():
+            cur_path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
+            if not cur_path:
+                print("Dont find .env file")
+                raise FileNotFoundError("dont have .env")
+            resolve_path = pathlib.Path(cur_path).expanduser().resolve() / path
+
         if not resolve_path.exists():
             print(f"ls: {ctx.params['path']}: [red]No such file or directory[/red]")
             raise FileNotFoundError("No such file or directory")

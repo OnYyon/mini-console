@@ -1,13 +1,10 @@
 import sys
 import dotenv
-import logging
 from typer import Context
 from functools import wraps
 from typing import Callable
 from src.constants import HISTORY_PATH, ENV_PATH
 
-
-logger = logging.getLogger("history")
 
 def make_history(func: Callable):
     @wraps(func)
@@ -23,7 +20,6 @@ def make_history(func: Callable):
             with open(HISTORY_PATH, "a") as f:
                 f.write(f"{cnt:<} {' '.join(sys.argv[1:])}\n")
             func(ctx, *args, **kwargs)
-        except Exception as e:
-            logger.critical(e)
+        except Exception:
             return
     return wrapper

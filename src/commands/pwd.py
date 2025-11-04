@@ -1,5 +1,6 @@
-import dotenv
 import typer
+import dotenv
+import pathlib
 from rich import print
 
 from src.constants import ENV_PATH
@@ -10,4 +11,7 @@ from src.utils.history_decorator import make_history
 @make_history
 def pwd(ctx: typer.Context):
     path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
-    print(path)
+    if not path:
+        print("Dont have .env")
+        raise FileNotFoundError("Dont have .env")
+    print(pathlib.Path(path).expanduser().resolve())
