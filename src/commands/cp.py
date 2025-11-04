@@ -20,6 +20,7 @@ def cp(
         target: Annotated[str, typer.Argument()],
         recursive: Annotated[bool, typer.Option("-r", "-R")] = False,
 ):
+    # TODO: check relative variants
     source_path = pathlib.Path(source).expanduser().resolve()
     if not source_path.is_absolute():
         cur_path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
