@@ -45,6 +45,8 @@ def rm(
         target_path = pathlib.Path(cur_path) / target_path
     target_path = target_path.expanduser().resolve()
 
+    ctx.data = {"command": ctx.info_name, "source": str(target_path), "target": str(trash_path)} # type: ignore
+
     try:
         if not target_path.exists():
             print(f"rm: {ctx.params['target']}: No such file or directory")

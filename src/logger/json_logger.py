@@ -29,11 +29,15 @@ def json_log(func: Callable):
         cmd = " ".join(sys.argv[1:])
         try:
             func(ctx, *args, **kwargs)
+            data = []
+            if hasattr(ctx, "data"):
+                data = ctx.data
             json_logger.info(
                 f"execute: {ctx.command.name}",
                 command=cmd,
                 function=ctx.command.name,
                 params=ctx.params,
+                paths=data,
             )
         except Exception:
             raise

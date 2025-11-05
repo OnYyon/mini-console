@@ -41,6 +41,8 @@ def cp(
             target_path = temp_target / source_path.name
     target_path = target_path.expanduser().resolve()
 
+    ctx.data = {"command": ctx.info_name, "source": str(source_path), "target": str(target_path)} # type: ignore
+
     try:
         if not source_path.exists():
             print(f"cp: [purple]{source}[/purple]: [red]No such file or directory[/red]")

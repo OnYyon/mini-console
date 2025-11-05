@@ -1,23 +1,21 @@
+import zipfile
 import typer
 import dotenv
 import pathlib
-import shutil
 from rich import print
 from typing_extensions import Annotated
 
 from src.constants import ENV_PATH
-from src.logger.json_logger import json_log
 from src.logger.human_logger import human_log
 from src.utils.history_decorator import make_history
 
 
 @human_log
-@json_log
 @make_history
-def mv(
+def zip(
         ctx: typer.Context,
-        source: Annotated[str, typer.Argument()],
-        target: Annotated[str, typer.Argument()],
+        source: Annotated[str, typer.Argument(help="Archive name")],
+        target: Annotated[str, typer.Argument(help="Folder to zip")],
 ):
     source_path = pathlib.Path(source)
     if not source_path.is_absolute():
@@ -26,6 +24,7 @@ def mv(
             print("Dont find .env file")
             raise FileNotFoundError("dont have .env")
         source_path = pathlib.Path(cur_path) / source_path
+
     source_path = source_path.expanduser().resolve()
 
     target_path = pathlib.Path(target)
@@ -34,26 +33,31 @@ def mv(
         if not cur_path:
             print("Dont find .env file")
             raise FileNotFoundError("dont have .env")
-
         target_path = pathlib.Path(cur_path) / target_path
-        if target_path.exists() and target_path.is_dir():
-            target_path = target_path / source_path.name
 
     target_path = target_path.expanduser().resolve()
 
-    ctx.data = {"command": ctx.info_name, "source": str(source_path), "target": str(target_path)} # type: ignore
+    if source_path.suffix.lower() != '.zip':
+        source_path = source_path.with_suffix('.zip')
 
     try:
-        if not source_path.exists():
-            print(f"mv: {source_path}: [red]No such file or directory[/red]")
+        if not target_path.exists():
+            print(f"zip: {target}: No such file or directory")
             raise FileNotFoundError("No such file or directory")
 
-        if target_path.exists() and target_path.is_dir():
-            target_path = target_path / source_path.name
+        if not target_path.is_dir():
+            print(f"zip: {target}: Is not a directory")
+            raise NotADirectoryError("Is not a directory")
 
-        shutil.move(str(source_path), str(target_path))
-        print(f"Moved [purple]{source_path}[/purple] to [purple]{target_path}[/purple]")
+        with zipfile.ZipFile(source_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+            for file_path in target_path.rglob("*"):
+                if file_path.is_file():
+                    arcname = file_path.relative_to(target_path.parent)
+                    zipf.write(file_path, arcname)
+                    print(f"adding: [purple]{arcname}[/purple]")
+
+        print(f"Created archive: [purple]{source_path}[/purple]")
 
     except PermissionError:
-        print("mv: [red]Permission denied[/red]")
+        print("zip: Permission denied")
         raise PermissionError("Permission denied")

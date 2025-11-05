@@ -1,7 +1,7 @@
 .PHONY: test
 
 test:
-	uv run python -m src.main rm test.png
+	uv run python -m src.main zip test.zip test
 help:
 	uv run python -m src.main cd --help
 clean:
