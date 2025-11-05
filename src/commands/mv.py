@@ -47,12 +47,10 @@ def mv(
             raise FileNotFoundError("No such file or directory")
 
         if target_path.exists() and target_path.is_dir():
-            final_target = target_path / source_path.name
-        else:
-            final_target = target_path
+            target_path = target_path / source_path.name
 
-        shutil.move(str(source_path), str(final_target))
-        print(f"Moved [purple]{source_path}[/purple] to [purple]{final_target}[/purple]")
+        shutil.move(str(source_path), str(target_path))
+        print(f"Moved [purple]{source_path}[/purple] to [purple]{target_path}[/purple]")
 
     except PermissionError:
         print("mv: [red]Permission denied[/red]")

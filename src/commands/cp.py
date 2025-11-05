@@ -20,16 +20,16 @@ def cp(
         target: Annotated[str, typer.Argument()],
         recursive: Annotated[bool, typer.Option("-r", "-R")] = False,
 ):
-    # TODO: check relative variants
-    source_path = pathlib.Path(source).expanduser().resolve()
+    source_path = pathlib.Path(source)
     if not source_path.is_absolute():
         cur_path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
         if not cur_path:
             print("Dont find .env file")
             raise FileNotFoundError("dont have .env")
-        source_path = (pathlib.Path(cur_path) / source_path).expanduser().resolve()
+        source_path = pathlib.Path(cur_path) / source_path
+    source_path = source_path.expanduser().resolve()
 
-    target_path = pathlib.Path(target).expanduser().resolve()
+    target_path = pathlib.Path(target)
     if not target_path.is_absolute():
         cur_path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
         if not cur_path:
@@ -38,9 +38,8 @@ def cp(
 
         temp_target = pathlib.Path(cur_path) / target_path
         if temp_target.exists() and temp_target.is_dir():
-            target_path = (temp_target / source_path.name).expanduser().resolve()
-        else:
-            target_path = temp_target.expanduser().resolve()
+            target_path = temp_target / source_path.name
+    target_path = target_path.expanduser().resolve()
 
     try:
         if not source_path.exists():

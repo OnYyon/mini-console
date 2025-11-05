@@ -6,6 +6,7 @@ from src.commands.pwd import pwd
 from src.commands.cat import cat
 from src.commands.cp import cp
 from src.commands.mv import mv
+from src.commands.rm import rm
 
 #TODO: make a correct create .env or check exists
 
@@ -17,6 +18,7 @@ app.command()(pwd)
 app.command()(cat)
 app.command()(cp)
 app.command()(mv)
+app.command()(rm)
 
 if __name__ == "__main__":
     app()

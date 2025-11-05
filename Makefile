@@ -1,7 +1,7 @@
 .PHONY: test
 
 test:
-	uv run python -m src.main mv All1 All
+	uv run python -m src.main rm test.png
 help:
 	uv run python -m src.main cd --help
 clean:
