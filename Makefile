@@ -1,12 +1,10 @@
 .PHONY: test
 
-UV = /home/onyyon/.local/bin/uv
-
 test:
-	$(UV) run python -m src.main ls
+	uv run python -m src.main untar ./Desktop/abs1.tar.gz
 help:
-	$(UV) run python -m src.main --help
+	uv run python -m src.main --help
 clean:
 	rm -r ./src/logs/*
 mypy:
-	$(UV) run mypy src
+	uv run mypy src

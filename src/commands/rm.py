@@ -1,30 +1,16 @@
 import typer
-import dotenv
 import pathlib
 import shutil
 from rich import print
 from typing_extensions import Annotated
 
+from src.constants import TRASH_PATH
 from src.logger.json_logger import json_log
 from src.logger.human_logger import human_log
-from src.constants import ENV_PATH, TRASH_PATH
-from src.utils.history_decorator import make_history
 from src.utils.make_abs_path import make_abs_path
+from src.utils.history_decorator import make_history
+from src.utils.generate_unique_name import generate_unique_name
 
-
-def generate_unique_name(trash_path: pathlib.Path, original_name: str) -> str:
-    base_name = original_name
-    counter = 1
-
-    while (trash_path / base_name).exists():
-        name_parts = original_name.split('.')
-        if len(name_parts) > 1:
-            base_name = f"{'.'.join(name_parts[:-1])}_{counter}.{name_parts[-1]}"
-        else:
-            base_name = f"{original_name}_{counter}"
-        counter += 1
-
-    return base_name
 
 # TODO: check trash dir else create
 @human_log

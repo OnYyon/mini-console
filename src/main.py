@@ -9,6 +9,9 @@ from src.commands.mv import mv
 from src.commands.rm import rm
 from src.commands.history import history
 from src.commands.zip import zip
+from src.commands.unzip import  unzip
+from src.commands.tar import tar
+from src.commands.untar import untar
 
 # TODO: make a correct create .env or check exists
 
@@ -25,6 +28,10 @@ app.command()(mv)
 app.command()(rm)
 app.command()(history)
 app.command()(zip)
+app.command()(unzip)
+app.command()(tar)
+app.command()(untar)
+
 
 if __name__ == "__main__":
     app()
