@@ -11,6 +11,7 @@ from typing_extensions import Annotated
 
 from src.constants import ENV_PATH
 from src.logger.human_logger import human_log
+from src.utils.make_abs_path import make_abs_path
 from src.utils.history_decorator import make_history
 
 
@@ -49,14 +50,8 @@ def ls(
             raise FileNotFoundError("dont have .env")
 
     try:
-        resolve_path = pathlib.Path(path).expanduser().resolve()
-        if not pathlib.Path(path).is_absolute():
-            cur_path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
-            if not cur_path:
-                print("Dont find .env file")
-                raise FileNotFoundError("dont have .env")
-            resolve_path = pathlib.Path(cur_path).expanduser().resolve() / path
-
+        resolve_path = make_abs_path(path, False)
+        print(resolve_path)
         if not resolve_path.exists():
             print(f"ls: {ctx.params['path']}: [red]No such file or directory[/red]")
             raise FileNotFoundError("No such file or directory")

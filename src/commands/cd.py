@@ -11,6 +11,7 @@ from src.logger.human_logger import human_log
 from src.utils.history_decorator import make_history
 
 
+#TODO: simple is more important
 @human_log
 @make_history
 def cd(

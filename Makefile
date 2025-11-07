@@ -1,10 +1,12 @@
 .PHONY: test
 
+UV = /home/onyyon/.local/bin/uv
+
 test:
-	uv run python -m src.main zip test.zip test
+	$(UV) run python -m src.main ls
 help:
-	uv run python -m src.main cd --help
+	$(UV) run python -m src.main --help
 clean:
 	rm -r ./src/logs/*
 mypy:
-	uv run mypy src
+	$(UV) run mypy src

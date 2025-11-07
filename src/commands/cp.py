@@ -1,13 +1,11 @@
 import typer
-import dotenv
-import pathlib
 import shutil
 from rich import print
 from typing_extensions import Annotated
 
-from src.constants import ENV_PATH
 from src.logger.json_logger import json_log
 from src.logger.human_logger import human_log
+from src.utils.make_abs_path import  make_abs_path
 from src.utils.history_decorator import make_history
 
 
@@ -20,26 +18,9 @@ def cp(
         target: Annotated[str, typer.Argument()],
         recursive: Annotated[bool, typer.Option("-r", "-R")] = False,
 ):
-    source_path = pathlib.Path(source)
-    if not source_path.is_absolute():
-        cur_path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
-        if not cur_path:
-            print("Dont find .env file")
-            raise FileNotFoundError("dont have .env")
-        source_path = pathlib.Path(cur_path) / source_path
-    source_path = source_path.expanduser().resolve()
+    source_path = make_abs_path(source, False)
 
-    target_path = pathlib.Path(target)
-    if not target_path.is_absolute():
-        cur_path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
-        if not cur_path:
-            print("Dont find .env file")
-            raise FileNotFoundError("dont have .env")
-
-        temp_target = pathlib.Path(cur_path) / target_path
-        if temp_target.exists() and temp_target.is_dir():
-            target_path = temp_target / source_path.name
-    target_path = target_path.expanduser().resolve()
+    target_path = make_abs_path(target, True, source_path.name)
 
     ctx.data = {"command": ctx.info_name, "source": str(source_path), "target": str(target_path)} # type: ignore
 

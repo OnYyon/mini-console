@@ -9,6 +9,7 @@ from src.logger.json_logger import json_log
 from src.logger.human_logger import human_log
 from src.constants import ENV_PATH, TRASH_PATH
 from src.utils.history_decorator import make_history
+from src.utils.make_abs_path import make_abs_path
 
 
 def generate_unique_name(trash_path: pathlib.Path, original_name: str) -> str:
@@ -36,14 +37,7 @@ def rm(
 ):
     trash_path = pathlib.Path(TRASH_PATH).expanduser().resolve()
 
-    target_path = pathlib.Path(target)
-    if not target_path.is_absolute():
-        cur_path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
-        if not cur_path:
-            print("Dont find .env file")
-            raise FileNotFoundError("dont have .env")
-        target_path = pathlib.Path(cur_path) / target_path
-    target_path = target_path.expanduser().resolve()
+    target_path = make_abs_path(target, False)
 
     ctx.data = {"command": ctx.info_name, "source": str(target_path), "target": str(trash_path)} # type: ignore
 
