@@ -1,7 +1,7 @@
 .PHONY: test
 
 test:
-	uv run python -m src.main undo
+	uv run python -m src.main grep -ri "INFO" ./src/logs/
 help:
 	uv run python -m src.main --help
 clean:

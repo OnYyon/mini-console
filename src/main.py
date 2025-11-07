@@ -37,6 +37,7 @@ def main():
     from src.commands.tar import tar
     from src.commands.untar import untar
     from src.commands.undo import undo
+    from src.commands.grep import grep
 
     app.command()(ls)
     app.command()(cd)
@@ -51,6 +52,7 @@ def main():
     app.command()(tar)
     app.command()(untar)
     app.command()(undo)
+    app.command()(grep)
 
     app()
 
