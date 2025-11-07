@@ -12,6 +12,7 @@ from src.commands.zip import zip
 from src.commands.unzip import  unzip
 from src.commands.tar import tar
 from src.commands.untar import untar
+from src.commands.undo import undo
 
 # TODO: make a correct create .env or check exists
 
@@ -31,7 +32,7 @@ app.command()(zip)
 app.command()(unzip)
 app.command()(tar)
 app.command()(untar)
-
+app.command()(undo)
 
 if __name__ == "__main__":
     app()

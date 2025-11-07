@@ -19,13 +19,13 @@ from src.utils.generate_unique_name import generate_unique_name
 def rm(
         ctx: typer.Context,
         target: Annotated[str, typer.Argument()],
-        recursive: Annotated[bool, typer.Option()] = False,
+        recursive: Annotated[bool, typer.Option("-r")] = False,
 ):
     trash_path = pathlib.Path(TRASH_PATH).expanduser().resolve()
 
     target_path = make_abs_path(target, False)
 
-    ctx.data = {"command": ctx.info_name, "source": str(target_path), "target": str(trash_path)} # type: ignore
+    ctx.data = {"command": ctx.info_name, "source": str(target_path), "target": str(trash_path / target_path.name)} # type: ignore
 
     try:
         if not target_path.exists():
@@ -46,7 +46,7 @@ def rm(
             trash_target = trash_path / unique_name
 
             shutil.move(str(target_path), str(trash_target))
-        print(f"Delete [purple]{trash_path}[/purple] to [purple]trash[/purple]")
+        print(f"Delete [purple]{target_path}[/purple] to [purple]trash[/purple]")
 
     except PermissionError:
         print(f"rm: {target}: [red]Permission denied[/red]")

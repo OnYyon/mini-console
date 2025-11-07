@@ -1,7 +1,7 @@
 .PHONY: test
 
 test:
-	uv run python -m src.main untar ./Desktop/abs1.tar.gz
+	uv run python -m src.main undo
 help:
 	uv run python -m src.main --help
 clean:
