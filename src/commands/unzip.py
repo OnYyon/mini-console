@@ -16,6 +16,7 @@ def unzip(
     ctx: typer.Context,
     path: Annotated[str, typer.Argument(help="path to archive.zip")],
 ):
+    """разаривирует архив zip"""
     source_path = make_abs_path(path, False)
     cur_path = make_abs_path(get_from_env("PYTHON_CONSOLE_PATH"), False)
 

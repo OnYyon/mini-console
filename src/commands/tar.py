@@ -18,6 +18,7 @@ def tar(
     target: Annotated[str, typer.Argument(help="Folder to zip")],
     compress: Annotated[bool, typer.Option("-z", help="Use gzip compression")] = False,
 ):
+    """создает tar архив из дириктории. Есть возможность с сжимаиние флаг compress"""
     source_path = make_abs_path(source, False)
     target_path = make_abs_path(target, False)
 

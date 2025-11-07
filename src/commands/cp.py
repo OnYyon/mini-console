@@ -14,10 +14,11 @@ from src.utils.history_decorator import make_history
 @make_history
 def cp(
         ctx: typer.Context,
-        source: Annotated[str, typer.Argument()],
-        target: Annotated[str, typer.Argument()],
+        source: Annotated[str, typer.Argument(help="from")],
+        target: Annotated[str, typer.Argument(help="to")],
         recursive: Annotated[bool, typer.Option("-r", "-R")] = False,
 ):
+    """Копирует что и куда"""
     source_path = make_abs_path(source, False)
 
     target_path = make_abs_path(target, True, source_path.name)

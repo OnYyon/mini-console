@@ -72,7 +72,6 @@ def undo(ctx: typer.Context):
             shutil.move(str(target), str(source))
             print(f"Undo [purple]rm[/purple]: restored [purple]{source}[/purple]")
 
-        # Remove the last entry from the log
         log_file.write_text("\n".join(lines[:-1]) + ("\n" if len(lines) > 1 else ""))
 
     except Exception as e:

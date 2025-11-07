@@ -7,6 +7,7 @@ from src.constants import HISTORY_PATH, ENV_PATH
 
 
 def make_history(func: Callable):
+    """декоратор для записывания истории"""
     @wraps(func)
     def wrapper(ctx: Context, *args, **kwargs):
         try:

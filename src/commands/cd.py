@@ -16,8 +16,9 @@ from src.utils.history_decorator import make_history
 @make_history
 def cd(
     ctx: typer.Context,
-    path: Annotated[Optional[str], Argument()] = None
+    path: Annotated[Optional[str], Argument(help="change dir to")] = None
 ):
+    """Меняет переменную окружения PYTHON_CONSOLE_PATH"""
     if not path:
         t = str(pathlib.Path("~").expanduser().resolve())
         dotenv.set_key(ENV_PATH, "PYTHON_CONSOLE_PATH", t)

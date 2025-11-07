@@ -15,6 +15,7 @@ def zip(
         source: Annotated[str, typer.Argument(help="Archive name")],
         target: Annotated[str, typer.Argument(help="Folder to zip")],
 ):
+    """Создает zip архив из папки только"""
     source_path = make_abs_path(source, False)
 
     target_path = make_abs_path(target, False)

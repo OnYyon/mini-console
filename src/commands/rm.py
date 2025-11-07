@@ -18,9 +18,10 @@ from src.utils.generate_unique_name import generate_unique_name
 @make_history
 def rm(
         ctx: typer.Context,
-        target: Annotated[str, typer.Argument()],
-        recursive: Annotated[bool, typer.Option("-r")] = False,
+        target: Annotated[str, typer.Argument(help="remove file or dir")],
+        recursive: Annotated[bool, typer.Option("-r", help="for recursive remove in dir")] = False,
 ):
+    """Удаляет файл или дирикторию"""
     trash_path = pathlib.Path(TRASH_PATH).expanduser().resolve()
 
     target_path = make_abs_path(target, False)

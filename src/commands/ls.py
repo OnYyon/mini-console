@@ -18,6 +18,7 @@ from src.utils.history_decorator import make_history
 def get_long_format(
         items: Generator[tuple[pathlib.Path, str], None, None]
 ) -> Generator[tuple[pathlib.Path, str], None, None]:
+    """расширяем фомат для долее подробного вывода"""
     month_in_sec = 15552000
     for item in items:
         mode = stat.filemode(item[0].stat().st_mode)
@@ -43,6 +44,7 @@ def ls(
     is_all: Annotated[bool, Option("-a",
                                    help="Include directory entries whose names begin with a dot.")] = False,
 ):
+    """Просматриваем файлы из текущий дириктории"""
     if not path:
         path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
         if not path:

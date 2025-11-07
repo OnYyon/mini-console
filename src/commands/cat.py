@@ -16,6 +16,7 @@ def cat(
     ctx: typer.Context,
     path: Annotated[Optional[str], typer.Argument(help="path to file")] = None
 ):
+    """Показывает файл. Если без аргментов превращяеться в echo"""
     if path is None:
         try:
             while True:

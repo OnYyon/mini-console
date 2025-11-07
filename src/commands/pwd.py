@@ -10,6 +10,7 @@ from src.utils.history_decorator import make_history
 @human_log
 @make_history
 def pwd(ctx: typer.Context):
+    """Возвращяем текущий path из .env"""
     path = dotenv.get_key(ENV_PATH, "PYTHON_CONSOLE_PATH")
     if not path:
         print("Dont have .env")

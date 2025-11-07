@@ -24,6 +24,7 @@ json_logger = structlog.get_logger()
 logger = logging.getLogger("json")
 
 def json_log(func: Callable):
+    """декоратор для логов в машином представляние для обрабтки при undo"""
     @wraps(func)
     def wrapper(ctx: typer.Context, *args, **kwargs):
         cmd = " ".join(sys.argv[1:])

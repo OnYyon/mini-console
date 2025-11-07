@@ -14,9 +14,10 @@ from src.utils.history_decorator import make_history
 @make_history
 def mv(
         ctx: typer.Context,
-        source: Annotated[str, typer.Argument()],
-        target: Annotated[str, typer.Argument()],
+        source: Annotated[str, typer.Argument(help="from")],
+        target: Annotated[str, typer.Argument(help="to")],
 ):
+    """перемешяем файли/дириктории или перименовываем файл"""
     source_path = make_abs_path(source, False)
     target_path = make_abs_path(target, True, source_path.name)
 

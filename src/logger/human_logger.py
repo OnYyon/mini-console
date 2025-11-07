@@ -9,6 +9,7 @@ logger = logging.getLogger("humanLogger")
 
 
 def human_log(func: Callable):
+    """декоратор для логирования в человеском формате"""
     @wraps(func)
     def wrapper(ctx: typer.Context, *args, **kwargs):
         try:

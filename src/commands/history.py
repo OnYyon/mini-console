@@ -14,7 +14,11 @@ def history(
     ctx: typer.Context,
     lines: Annotated[int, typer.Argument(help="How many lines")] = 10,
 ):
-    # TODO: replace with os.seek(tail cmd in linux)
+    """Возвращяем историю из файда .history"""
+    if lines < 0:
+        print("history: [red]negative number of rows[/red]")
+        raise ValueError("negative number of rows")
+
     with open(HISTORY_PATH, encoding="utf-8") as f:
         for line in deque(f, lines):
             print(line, end="")
